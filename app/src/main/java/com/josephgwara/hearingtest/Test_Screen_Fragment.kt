@@ -10,18 +10,22 @@ import android.view.View
 import android.view.ViewGroup
 import com.josephgwara.hearingtest.databinding.FragmentTestScreenBinding
 import kotlinx.coroutines.*
+
+
 private lateinit var pool: SoundPool
 private lateinit var audioAttributes: AudioAttributes
 class Test_Screen_Fragment : Fragment() {
-   private lateinit var binding: FragmentTestScreenBinding
+    private lateinit var binding: FragmentTestScreenBinding
+    private val sm = SoundManager()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentTestScreenBinding.inflate(inflater,container,false)
-countDown()
+        countDown()
 
-        val sm = SoundManager()
-        sm.loadSounds(inflater.context)
+
+        sm.loadNoises(inflater.context)
+        sm.loadVoices(inflater.context)
 
         binding.submitBtn.setOnClickListener{
 
@@ -32,14 +36,19 @@ countDown()
     }
 
 
-fun countDown(){
+private fun countDown(){
     object :CountDownTimer(3000,1000){
         override fun onTick(p0: Long) {
-            binding.countTextView2.text = ""+p0/1000
+            binding.countTextView.text = "Test will begin in\n"+"             "+p0/1000
         }
 
         override fun onFinish() {
-            binding.countTextView2.text = "God is Great"
+            binding.countTextView.visibility = View.GONE
+            binding.exitTestBtn.visibility = View.VISIBLE
+            binding.tripletEditText.visibility = View.VISIBLE
+            binding.submitBtn.visibility = View.VISIBLE
+            context?.let { sm.PlaySounds(it,0,0) }
+
         }
 
     }.start()
