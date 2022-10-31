@@ -6,10 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".Home_Fragment">
 
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/viewResultsButton"
+        android:src="@drawable/ic_baseline_menu_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/app_name"
+        android:text="@string/not_hearza"
         android:textSize="60sp"
         app:layout_constraintBottom_toTopOf="@+id/beginTestBtn"
         app:layout_constraintEnd_toEndOf="parent"
@@ -20,9 +28,12 @@
         android:id="@+id/beginTestBtn"
         style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
         android:layout_width="150dp"
-        android:layout_height="140dp"
+        android:layout_height="150dp"
         android:text="@string/begin_test"
-        app:cornerRadius="210dp"
+        android:textSize="16sp"
+        app:cornerRadius="250dp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

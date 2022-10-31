@@ -1,16 +1,11 @@
 package com.josephgwara.hearingtest
 
 
-import android.app.Application
+
 import android.content.Context
-import android.media.AudioAttributes
 import android.media.MediaPlayer
-import android.media.SoundPool
-import android.os.CountDownTimer
-import android.util.Log
-import kotlinx.coroutines.*
-
-
+import java.util.*
+import kotlin.concurrent.schedule
 
 
 class SoundManager{
@@ -35,8 +30,11 @@ fun playNoise(context: Context,noise:Int){
         mediaPlayer = MediaPlayer.create(context,noises[noise])
         mediaPlayer.start()
 
+    Timer().schedule(5500){
+        mediaPlayer.stop()
+    }
 }
-    fun triplet(context: Context,voice1:Int,voice2: Int,voice3:Int){
+    fun triplet(context: Context,voice1:Int,voice2:Int,voice3:Int){
 
        val voices = intArrayOf(
            R.raw.voice_1,
@@ -48,30 +46,18 @@ fun playNoise(context: Context,noise:Int){
            R.raw.voice_7,
            R.raw.voice_8,
            R.raw.voice_9)
-        mediaPlayer = MediaPlayer.create(context,voices[voice1])
-        object :CountDownTimer(1000,1000){
-            override fun onTick(p0: Long) {
-                //Do nothing
+
+        var mediaPlayer1 = MediaPlayer.create(context,voices[voice1])
+        val mediaPlayer2 = MediaPlayer.create(context,voices[voice2])
+        val mediaPlayer3 = MediaPlayer.create(context,voices[voice3])
+        mediaPlayer1.start()
+
+        Timer().schedule(1000) {
+            mediaPlayer2.start()
+            Timer().schedule(1000){
+                mediaPlayer3.start()
             }
-
-            override fun onFinish() {
-                val mediaPlayer1:MediaPlayer = MediaPlayer.create(context,voices[voice2])
-                object:CountDownTimer(1000,1000){
-                    override fun onTick(p0: Long) {
-
-                    }
-
-                    override fun onFinish() {
-                        val mediaPlayer3:MediaPlayer = MediaPlayer.create(context,voices[voice3])
-                        mediaPlayer3.start()
-                    }
-                }.start()
-                mediaPlayer1.start()
-            }
-
-        }.start()
-        mediaPlayer.start()
-
+        }
 
     }
 
