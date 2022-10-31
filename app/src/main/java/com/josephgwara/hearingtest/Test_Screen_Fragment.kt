@@ -12,6 +12,10 @@ import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.josephgwara.hearingtest.databinding.FragmentTestScreenBinding
 import kotlinx.android.synthetic.main.fragment_test__screen_.view.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.Default
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.concurrent.schedule
 
@@ -52,7 +56,25 @@ private fun countDown(){
 
     private fun test(){
 
-        testRound()
+CoroutineScope(Default).launch {
+
+    testRound()
+      var looper = 1
+    while (looper < 9) {
+
+        binding.submitBtn.setOnClickListener {
+            if (binding.tripletEditText.text.isNotEmpty()) {
+                testRound()
+                binding.tripletEditText.text.clear()
+
+            } else {
+                binding.tripletEditText.error
+            }
+        }
+        looper++
+    }
+
+}
 
 
 
@@ -74,9 +96,11 @@ private fun testRound(){
         }
         else{
             var tripletA =binding.tripletEditText.text.toString()
+            binding.tripletEditText.text.clear()
             if ( tripletA == tripletP){
                 score += difficulty
                 noise ++
+
             }
             else{
                     if (noise == 0){
@@ -98,7 +122,8 @@ private fun testRound(){
     }
 
 
-private fun playSounds(noise:Int,v1:Int,v2:Int,v3:Int){
+
+    private fun playSounds(noise:Int,v1:Int,v2:Int,v3:Int){
     sm.playNoise(layoutInflater.context,noise)
     Timer().schedule(1500) {
         sm.triplet(layoutInflater.context,v1,v2,v3)
